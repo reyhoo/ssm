@@ -30,7 +30,7 @@ public class RedirectController {
 	@RequestMapping("showRoleJsonInfo")
 	public ModelAndView showRoleJsonInfo(@RequestParam("id")Long id,
 			@RequestParam(value="roleName",required=false)String roleName,
-			@RequestParam(value="roleName",required=false)String note) {
+			@RequestParam(value="note",required=false)String note) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("id", id);
 		mv.addObject("roleName", roleName);
@@ -57,7 +57,7 @@ public class RedirectController {
 		model.addAttribute("id", role.getId());
 		model.addAttribute("roleName", role.getRoleName());
 		model.addAttribute("note", role.getNote());
-		return "redirect:showRoleJsonInfo";
+		return "redirect:/redirect/showRoleJsonInfo";
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class RedirectController {
 		mv.addObject("id", role.getId());
 		mv.addObject("roleName", role.getRoleName());
 		mv.addObject("note", role.getNote());
-		mv.setViewName("redirect:showRoleJsonInfo");
+		mv.setViewName("redirect:/redirect/showRoleJsonInfo");
 		return mv;
 	}
 	/**
@@ -92,7 +92,7 @@ public class RedirectController {
 	public String addRole2(RedirectAttributes ra,Role role) {
 		roleService.addRole(role);
 		ra.addFlashAttribute("role", role);
-		return "redirect:showRoleJsonInfo2";
+		return "redirect:/redirect/showRoleJsonInfo2";
 	}
 	/**
 	 * 重定向接收RedirectAttributes传递的复杂对象参数
