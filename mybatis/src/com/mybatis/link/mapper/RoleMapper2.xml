@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.link.mapper.RoleMapper2">
+	
+	
+	<resultMap type="role2" id="roleMap2">
+		<id column="id" property="id"/>
+		<result column="role_name" property="roleName"/>
+		<result column="note" property="note"/>
+		<collection property="userList" column="id" fetchType="lazy" select="com.mybatis.link.mapper.UserMapper2.findUsersByRoleId"></collection>
+	</resultMap>
+	<sql id="cols">r.id,r.role_name,r.note</sql>
+	<select id="getRole" parameterType="long" resultMap="roleMap2">
+		select <include refid="cols"></include> from t_role r where r.id=#{id}
+	</select>
+	<select id="findRolesByUserId" parameterType="long" resultMap="roleMap2">
+		select <include refid="cols"></include> from t_role_user2 ru 
+		left join t_role r on r.id = ru.role_id
+		left join t_user2 u on u.id = ru.user_id
+		where u.id=#{id}
+		
+	</select>
+</mapper>

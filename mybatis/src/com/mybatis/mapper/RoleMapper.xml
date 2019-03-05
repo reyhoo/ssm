@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.RoleMapper">
+	
+	
+	<resultMap type="role" id="roleMap">
+		<id column="id" property="id" />
+		<result column="role_name" property="roleName" />	
+		<result column="note" property="note" />
+	</resultMap>
+	<select id="getRole" parameterType="long" resultMap="roleMap">
+		select <include refid="roleColumns"></include> from t_role where id=#{id}
+	</select>
+	<update id="updateRole" parameterType="role">
+		update t_role set role_name = #{roleName} , note = #{note} where id=#{id}
+	</update>
+	<sql id="roleColumns">id,role_name,note</sql>
+	<insert id="insertRole" parameterType="role">
+		insert into t_role (role_name,note) values(#{roleName},#{note})
+	</insert>
+	<insert id="insertRoleGetId" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+		insert into t_role (role_name,note) values(#{roleName},#{note})
+	</insert>
+	<insert id="insertRoleCustomId" parameterType="role" >
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			select if(max(id) = null,1,max(id)+1) from t_role
+		</selectKey>
+		insert into t_role (<include refid="roleColumns"></include>) values(#{id},#{roleName},#{note})
+	</insert>
+	<delete id="deleteRole" parameterType="long">
+		delete from t_role where id = #{id}
+	</delete>
+	<select id="findRolesByMap" parameterType="map" resultMap="roleMap">
+		select * from t_role where role_name like concat('%',#{roleName},'%') and
+		 note like concat('%',#{note},'%')
+	</select>
+	<select id="findRolesByAnnotation" resultMap="roleMap">
+		select * from t_role where role_name like concat('%',#{roleName1},'%') and
+		 note like concat('%',#{note1},'%')
+		 </select>
+	<select id="findRolesByMix" resultMap="roleMap">
+		select * from t_role where role_name like concat('%',#{roleName},'%') and
+		 note like concat('%',#{note},'%') limit #{page.start} , #{page.limit}
+		 </select>
+	<select id="findRolesByRowBounds" resultMap="roleMap">
+		select * from t_role where role_name like concat('%',#{roleName},'%') and
+		 note like concat('%',#{note},'%')
+		 </select>
+</mapper>

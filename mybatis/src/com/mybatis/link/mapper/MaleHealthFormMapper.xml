@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.link.mapper.MaleHealthFormMapper" >
+
+
+	<sql id="cols">id,emp_id empId,heart,liver,spleen,lung,kidney,prostate,note</sql>
+	<select id="getMaleHealthForm" resultType="maleHealthForm" parameterType="long">
+		select <include refid="cols"></include> from t_male_health_form where emp_id = #{id}
+	</select>
+</mapper>

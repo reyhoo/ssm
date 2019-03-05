@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dynamicsql.mapper.RoleMapper">
+
+	<resultMap type="role" id="roleMap">
+		<id column="id" property="id" />
+		<result column="role_name" property="roleName" />
+		<result column="note" property="note" />
+	</resultMap>
+	<sql id="cols">id,role_name,note</sql>
+	<select id="findRoles" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role where 1 = 1
+		<!-- if元素 -->
+		<if test="roleName != null and roleName != ''">
+			and role_name like concat('%',#{roleName},'%')
+		</if>
+	</select>
+	<select id="findRoles2" parameterType="role" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role where 1 = 1
+		<!-- choose,when,otherwise元素 -->
+		<choose>
+			<when test="id != null and id != ''">
+				and id = #{id}
+			</when>
+			<when test="roleName != null and roleName != ''">
+				and role_name like concat('%',#{roleName},'%')
+			</when>
+			<otherwise>
+				and note is not null
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findRoles3" parameterType="role" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role
+		<where>
+			<if test="roleName != null and roleName != ''">
+				and role_name like concat('%',#{roleName},'%')
+			</if>
+			<if test="note != null and note != ''">
+				and note like concat('%',#{note},'%')
+			</if>
+		</where>
+	</select>
+	<select id="findRoles4" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role
+		<trim prefix="where" prefixOverrides="and">
+		<if test="role != null">
+			<if test="role.roleName != null and role.roleName != ''">
+				and role_name like concat('%',#{role.roleName},'%')
+			</if>
+			<if test="role.note != null and role.note != ''">
+				and note like concat('%',#{role.note},'%')
+			</if>
+		</if>
+		</trim>
+	</select>
+	<update id="updateRole" parameterType="role">
+		update t_role 
+		<set>
+			<if test="roleName != null and roleName != ''">
+				role_name = #{roleName},
+			</if>
+			<if test="note != null and note != ''">
+				note = #{note},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateRole2" parameterType="role">
+		update t_role
+		<trim prefix="set" suffixOverrides=",">
+			<if test="roleName != null and roleName != ''">
+				role_name = #{roleName},
+			</if>
+			<if test="note != null and note != ''">
+				note = #{note},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<select id="findRolesByIds" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role where id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+	
+	<select id="findRoles5" resultMap="roleMap">
+		<bind name="p_roleName" value="'%'+roleName+'%'"/>
+		<bind name="p_note" value="'%'+note+'%'"/>
+		select <include refid="cols"></include> from t_role where role_name like #{p_roleName}
+		and note like #{p_note}
+	</select>
+</mapper>

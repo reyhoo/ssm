@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.link.mapper.TaskMapper" >
+
+	
+	<resultMap type="task" id="taskMap">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="context" property="context" />
+		<result column="note" property="note" />
+	</resultMap>
+	<select id="getTaskById" parameterType="long" resultMap="taskMap">
+		select * from t_task where id = #{id}
+	</select>
+</mapper>

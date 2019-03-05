@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yl.springmvc.params.mapper.RoleMapper">
+
+	<resultMap type="role" id="roleMap">
+		<id column="id" property="id"/>
+		<result column="role_name" property="roleName"/>
+		<result column="note" property="note"/>
+	</resultMap>
+	<sql id="cols">id,role_name,note</sql>
+	<select id="getRole" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role where id=#{id}
+	</select>
+	<select id="findRoles" resultMap="roleMap" parameterType="roleParams">
+		select <include refid="cols"></include> from t_role 
+		<trim prefix="where" prefixOverrides="and">
+			<if test="roleName != null and roleName != ''">
+				<bind name="p_roleName" value="'%'+roleName+'%'"/>
+				and role_name like #{p_roleName}
+			</if>
+			<if test="note != null and note != ''">
+				<bind name="p_note" value="'%'+note+'%'"/>
+				and note like #{p_note}
+			</if>
+		</trim>
+		limit #{pageParams.start},#{pageParams.limit}
+	</select>
+	<delete id="deleteRoles">
+	
+		delete from t_role where id in 
+		<foreach collection="ids" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insertRole" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+		insert into t_role (role_name,note) values (#{roleName},#{note})
+	</insert>
+</mapper>
