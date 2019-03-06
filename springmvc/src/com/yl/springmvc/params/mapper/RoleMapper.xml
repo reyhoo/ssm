@@ -24,7 +24,9 @@
 				and note like #{p_note}
 			</if>
 		</trim>
-		limit #{pageParams.start},#{pageParams.limit}
+		<if test="pageParams != null">
+			limit #{pageParams.start},#{pageParams.limit}
+		</if>
 	</select>
 	<delete id="deleteRoles">
 	
