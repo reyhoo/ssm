@@ -87,9 +87,12 @@ public class UploadController {
 			//TODO 只要简单的文件名称而不是文件的全路径。
 			fileName = fileName.substring(fileName.lastIndexOf(File.pathSeparatorChar)+1);
 		}
+		System.err.println(fileName);
 		try {
 			//TODO 这里会使用web.xml中配置的文件目录的基础上拼接上文件名称，然后保存。
 			f.transferTo(new File(fileName));
+			//TODO 这里也可以使用绝对路径
+//			f.transferTo(new File("/Users/wby/Documents/"+fileName));
 			return "上传成功";
 		} catch (Exception e) {
 			e.printStackTrace();
