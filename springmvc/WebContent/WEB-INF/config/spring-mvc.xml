@@ -20,6 +20,8 @@
 		<property name="prefix" value="/WEB-INF/page/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></bean>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<mvc:interceptors>
