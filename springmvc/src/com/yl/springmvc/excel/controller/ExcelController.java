@@ -29,7 +29,7 @@ public class ExcelController {
 	public ModelAndView exportRoles() {
 		ModelAndView mv = new ModelAndView();
 		ExcelView excelView = new ExcelView(excelExportService());
-//		excelView.setFileName("所有角色.xls");
+		excelView.setFileName("所有角色.xls");
 		RoleParams roleParams = new RoleParams();
 //		PageParams pageParams = new PageParams();
 //		roleParams.setPageParams(pageParams);
