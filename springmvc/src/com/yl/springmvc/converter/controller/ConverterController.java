@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yl.springmvc.converter.pojo.FormatPojo;
 import com.yl.springmvc.params.service.RoleService;
 import com.yl.springmvc.pojo.Role;
 
@@ -65,7 +66,7 @@ public class ConverterController {
 		return map;
 	}
 	/**
-	 * 测试失败
+	 * 测试失败，原因不明
 	 * roles=role=21-rolename21-note21,22-rolename22-note22
 	 * @param roles
 	 * @return
@@ -92,6 +93,14 @@ public class ConverterController {
 		Map<String, String> map = new HashMap<>();
 		map.put("date", date+"");
 		map.put("amount", amount+"");
+		return map;
+	}
+	@RequestMapping("formatPojo")
+	@ResponseBody
+	public Map<String, String> formatPojo(FormatPojo formatPojo){
+		Map<String, String> map = new HashMap<>();
+		map.put("date1", formatPojo.getDate1()+"");
+		map.put("amount1", formatPojo.getAmount1().doubleValue()+"");
 		return map;
 	}
 }
