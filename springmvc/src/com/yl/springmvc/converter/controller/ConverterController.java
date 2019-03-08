@@ -1,11 +1,15 @@
 package com.yl.springmvc.converter.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +76,22 @@ public class ConverterController {
 		int count = roleService.updateRoles(roles);
 		Map<String, String>map = new HashMap<>();
 		map.put("updateTotal", ""+count);
+		return map;
+	}
+	/**
+	 * http://localhost/springmvc/converter/format?date=1989-03-25&amount=1111999.99
+	 * 使用注解@DateTimeFormat和@NumberFormat格式化数据
+	 * @param date
+	 * @param amount
+	 * @return
+	 */
+	@RequestMapping("format")
+	@ResponseBody
+	public Map<String, String>format(@DateTimeFormat(iso=ISO.DATE)Date date,
+			@NumberFormat(pattern="#,###.##")Double amount){
+		Map<String, String> map = new HashMap<>();
+		map.put("date", date+"");
+		map.put("amount", amount+"");
 		return map;
 	}
 }
