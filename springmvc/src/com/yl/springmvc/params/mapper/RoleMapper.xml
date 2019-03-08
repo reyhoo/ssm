@@ -38,4 +38,17 @@
 	<insert id="insertRole" parameterType="role" useGeneratedKeys="true" keyProperty="id">
 		insert into t_role (role_name,note) values (#{roleName},#{note})
 	</insert>
+	<update id="updateRole" parameterType="role">
+	
+		update t_role
+		<trim prefix="set" suffixOverrides=",">
+			<if test="roleName != null and roleName != ''">
+				role_name=#{roleName},
+			</if>
+			<if test="note != null and note != ''">
+				note=#{note},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
 </mapper>

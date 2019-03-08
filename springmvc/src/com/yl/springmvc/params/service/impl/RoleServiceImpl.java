@@ -44,5 +44,20 @@ public class RoleServiceImpl implements RoleService {
 	public int addRole(Role role) {
 		return roleMapper.insertRole(role);
 	}
+	@Transactional
+	@Override
+	public int updateRole(Role role) {
+		return roleMapper.updateRole(role);
+	}
+	
+	@Transactional
+	@Override
+	public int updateRoles(List<Role> roles) {
+		int count = 0;
+		for (Role role : roles) {
+			count+=roleMapper.updateRole(role);
+		}
+		return count;
+	}
 
 }

@@ -12,7 +12,15 @@
 	 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<!-- mvc使用注解驱动 -->
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+	<!-- 注册一对一转换器 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.yl.springmvc.converter.StringToRoleConverter"></bean>
+			</list>
+		</property>
+	</bean>
 	
 	<!-- 设置spring组件扫描base-package -->
 	<context:annotation-config></context:annotation-config>
@@ -25,8 +33,11 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
+	<!-- 设置上传文件的MultipartResolver -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></bean>
 	
+	
+	<!-- 设置消息转换器 -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
 			<list>
@@ -34,6 +45,7 @@
 			</list>
 		</property>
 	</bean>
+	<!-- 注入消息转换器 -->
 	<bean id="jsonConverter" 
 	class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="supportedMediaTypes">
@@ -45,7 +57,7 @@
 	
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
-	
+	<!-- 设置拦截器 -->
 	<mvc:interceptors>
 	<!-- 拦截器的执行顺序和配置顺序一致 -->
 		<mvc:interceptor>
