@@ -39,7 +39,7 @@
 		<load-on-startup>2</load-on-startup>
 		<!-- StandardMultipartResolver在参数 -->
 		<multipart-config>
-			<location>/Users/wby/Documents/yl/uploads</location>
+			<location>d:\mvc\upload</location>
 			<max-file-size>5242880</max-file-size><!-- 5M  -->
 			<max-request-size>10485760</max-request-size><!-- 10M -->
 			<file-size-threshold>0</file-size-threshold>
