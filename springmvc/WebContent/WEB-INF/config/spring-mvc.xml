@@ -55,7 +55,37 @@
 		</property>
 	</bean>
 	
+	<!-- 设置国际化使用中的messageSource -->
 	
+	<!-- ResourceBundleMessageSource不具备热加载功能，只有系统重新启动再会再加载资源文件 -->
+<!-- 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames" value="/WEB_INF/config/locale/msg"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean> -->
+	
+	<!-- ReloadableResourceBundleMessageSource支持重新加载，推荐使用 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	
+		<property name="basenames" value="/WEB-INF/config/locale/msg"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<!-- cacheMillis如果不设置默认为-1表示永远不会探测文件的修改时间，不会重新加载文件。
+		如果设置为0表示每次访问都会探测文件的修改时间，如果修改过就会重新加载。
+		如果为其它值表示每隔指定时间就会探测文件的修改时间，如果修改过就会重新加载。 -->
+		<property name="cacheSeconds" value="3600"></property>
+	</bean>
+	
+	<!--  -->
+	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="zh_CN"></property>
+		<property name="cookieName" value="lang"></property>
+		cookie超时秒数
+		<property name="cookieMaxAge" value="20"></property>
+	</bean> -->
+	
+	<!-- 国际化的localeResolver -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="zh_CN"></property>
+	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	<!-- 设置拦截器 -->
 	<mvc:interceptors>
@@ -73,5 +103,14 @@
 			<mvc:mapping path="/inter/*"/>
 			<bean class="com.yl.springmvc.inter.interceptor.TestInterceptor3"></bean>
 		</mvc:interceptor> -->
+		
+		
+		<!-- 国际化拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/message/*"/>
+			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+				<property name="paramName" value="language"></property>
+			</bean>
+		</mvc:interceptor>
 	</mvc:interceptors>
 </beans>
