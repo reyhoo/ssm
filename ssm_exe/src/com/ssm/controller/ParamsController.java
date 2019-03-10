@@ -12,6 +12,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,6 +108,11 @@ public class ParamsController {
 		return role;
 	}
 	
+	@RequestMapping("getRole/{id}")
+	@ResponseBody
+	public Role getRole(@PathVariable("id") Long id) {
+		return roleService.getRole(id);
+	}
 	@RequestMapping("postJson")
 	public String postJson() {
 		return "postJson";

@@ -39,4 +39,12 @@
 		</property>
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.ssm.interceptor.TestInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

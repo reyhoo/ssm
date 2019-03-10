@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 //标识控制器通知，并且指定对应的包
 //只对指定包或者子包下的控制器起作用
+
+//事实上，@InitBinder,@ExceptionHandler,@ModelAttribute也可以用在控制器（@Controller注解）上,
+//但是只是对当前控制器有效，详情代码查看advice1包下的控制器。
 @ControllerAdvice(basePackageClasses=CommonControllerAdvice.class)
 public class CommonControllerAdvice {
 
