@@ -13,7 +13,7 @@
 		var baseUrl = $("#baseUrl").val();
 	//	alert(baseUrl);/*  */
 		$("#findRoles").click(function(){
-			request(baseUrl+"params/findRoles",JSON.stringify({roleName:"姚",note:"3",pageParams:{start:0,limit:90}}),"application/json");
+			request(baseUrl+"params/findRoles",JSON.stringify({roleName:"姚",note:"",pageParams:{start:0,limit:90}}),"application/json");
 		});
 		$("#deleteRoles").click(function(){
 			var data=[1,2,3,4];
