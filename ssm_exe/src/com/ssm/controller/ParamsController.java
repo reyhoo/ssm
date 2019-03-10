@@ -97,15 +97,15 @@ public class ParamsController {
 	}
 	
 	@RequestMapping("addRole3")
-	@ResponseBody
-	public Role addRole3(@RequestParam(value="roleName",required=false)String role_name,String note) {
+//	@ResponseBody
+	public String addRole3(@RequestParam(value="roleName",required=false)String role_name,String note) {
 		System.err.println(role_name);
 		System.err.println(note);
 		Role role = new Role();
 		role.setRoleName(role_name);
 		role.setNote(note);
 		roleService.addRole(role);
-		return role;
+		return "redirect:/role/list";
 	}
 	
 	@RequestMapping("getRole/{id}")
