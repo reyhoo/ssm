@@ -24,6 +24,6 @@ public class MyAdviceController {
 	
 	@RequestMapping("exception")
 	public void exception() {
-		throw new RuntimeException("²âÊÔÒì³£");
+		throw new RuntimeException("æµ‹è¯•å¼‚å¸¸");
 	}
 }

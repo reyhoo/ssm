@@ -41,10 +41,29 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
+	<bean id="messageSource" 
+	class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<array>
+				<value>/WEB-INF/config/locale/msg</value>
+			</array>
+		</property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="cacheSeconds" value="3600"></property>
+	</bean>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="zh_CN"></property>
+	</bean>
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<bean class="com.ssm.interceptor.TestInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/message/*"/>
+			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+				<property name="paramName" value="language"></property>
+			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 </beans>
