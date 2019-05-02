@@ -78,6 +78,19 @@ values('user12','r_user4',0,'131','tom@qq.com','user4..note');
 insert into t_user2(user_name,real_name,sex,mobile,email,note)
 values('user13','r_user4',0,'131','tom@qq.com','user4..note');
 
+drop table if exists t_role_user;
+create table t_role_user(
+	id bigint primary key auto_increment,
+	role_id bigint not null,
+	user_id bigint not null
+);
+alter table t_role_user add constraint fk1_role foreign key(role_id) references t_role (id)
+on delete restrict on update restrict;
+
+alter table t_role_user add constraint fk_user foreign key(user_id) references t_user (id)
+on delete restrict on update restrict;
+
+
 
 
 drop table if exists t_role_user2;

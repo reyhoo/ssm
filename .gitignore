@@ -24,3 +24,5 @@ hs_err_pid*
 .mymetadata/
 classes/
 /.recommenders/
+.idea/
+*.iml
