@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <!--
+        使用注解驱动，其中属性 cache-manager 默认值为cacheManager，所以如果你的缓存器名称也是cacheManager则无需重新定义
+    -->
+    <cache:annotation-driven cache-manager="redisCacheManager"></cache:annotation-driven>
+
+    <!--配置redis连接池-->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--最大空闲数-->
+        <property name="maxIdle" value="50"></property>
+        <property name="maxTotal" value="100"></property>
+        <property name="maxWaitMillis" value="10000"></property>
+    </bean>
+
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+    <bean id="jdkSerializationRedisSerializer"
+          class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></bean>
+
+    <!--创建Jedis连接工厂-->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>
+        <property name="hostName" value="192.168.1.104"></property>
+        <property name="port" value="6379"></property>
+    </bean>
+
+    <!--定义RedisTemplate,并且设置连接工厂-->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <property name="defaultSerializer" ref="stringRedisSerializer"></property>
+        <property name="keySerializer" ref="stringRedisSerializer"></property>
+        <property name="valueSerializer" ref="jdkSerializationRedisSerializer"></property>
+        <property name="hashKeySerializer" ref="stringRedisSerializer"></property>
+        <property name="hashValueSerializer" ref="jdkSerializationRedisSerializer"></property>
+    </bean>
+    <!--定义缓存管理器，如果你使用id="cacheManager",则驱动不需要显式配置 cache-manager-->
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg index="0" ref="redisTemplate"></constructor-arg>
+        <!--定义默认超时时间，单位秒-->
+        <property name="defaultExpiration" value="600"></property>
+        <!--管理缓存器的名称-->
+        <property name="cacheNames">
+            <list>
+                <value>redisCacheManager</value>
+            </list>
+        </property>
+    </bean>
+</beans>

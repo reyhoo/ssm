@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.exe.mapper.RoleMapper">
+	<resultMap type="role" id="roleMap">
+		<id column="id" property="id"/>
+		<result column="role_name" property="roleName"/>
+		<result column="note" property="note"/>
+	</resultMap>
+	<sql id="cols">id,role_name,note</sql>
+	<select id="getRole" parameterType="long" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role where id=#{id}
+	</select>
+	<select id="getAll" resultMap="roleMap">
+		select <include refid="cols"></include> from t_role
+	</select>
+	<update id="updateRole">
+		update t_role
+		<trim prefix="set" suffixOverrides=",">
+			<if test="role.roleName != null and role.roleName != ''">
+				role_name=#{role.roleName},
+			</if>
+			<if test="role.note != null and role.note != ''">
+				note=#{role.note},
+			</if>
+		</trim>
+		where id=#{role.id}
+	</update>
+	<insert id="insertRole" useGeneratedKeys="true" keyProperty="role.id">
+		insert into t_role (role_name,note)values(#{role.roleName},#{role.note})
+	</insert>
+</mapper>

@@ -14,7 +14,7 @@
 		<package name="com.ssm.exe.typehandler"/>
 	</typeHandlers>
 	<mappers>
-		<mapper resource="mappers/RoleMapper.xml"></mapper>
+		<mapper resource="mybatis/mappers/RoleMapper.xml"></mapper>
 	</mappers>
 
 </configuration>
